@@ -1,0 +1,7 @@
+
+port: 3000
+
+logs:
+  console: true
+  app: false
+  error: false

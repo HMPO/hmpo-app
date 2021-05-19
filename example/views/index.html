@@ -1,0 +1,20 @@
+{% from "hmpo-form/macro.njk" import hmpoForm %}
+{% from "hmpo-submit/macro.njk" import hmpoSubmit %}
+{% from "hmpo-text/macro.njk" import hmpoText %}
+
+{% extends "hmpo-template.njk" %}
+{% set hmpoPageKey = "firstPage" %}
+
+{% block hmpoContent %}
+    {{ super() }}
+
+    {% call hmpoForm(ctx) %}
+        {{ hmpoText(ctx, {
+            id: "fieldName",
+            label: {
+                classes: "govuk-label--m"
+            }
+        }) }}
+        {{ hmpoSubmit(ctx) }}
+    {% endcall %}
+{% endblock %}

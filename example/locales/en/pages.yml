@@ -1,0 +1,12 @@
+
+firstPage:
+  title: First page
+  content:
+    - This is the first page.
+    - 'You will need to:'
+    - - fill in the field on this page
+    - - submit the form
+
+done:
+    title: Completed
+    content: 'You have entered: {{ values.fieldName }}'
