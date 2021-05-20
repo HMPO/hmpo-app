@@ -1,0 +1,10 @@
+
+buttons:
+  next: Continue
+govuk:
+  serviceName: My first service
+  backLink: Back
+  errorSummaryTitle: There’s a problem
+  error: Error
+  warning: Warning
+  skipLink: Skip to main content

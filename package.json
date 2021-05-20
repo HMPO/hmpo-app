@@ -1,0 +1,99 @@
+{
+  "name": "hmpo-app",
+  "version": "1.0.0rc1",
+  "description": "Bootstrap middleware and templating",
+  "author": "HMPO",
+  "license": "MIT",
+  "private": false,
+  "engineStrict": true,
+  "engines": {
+    "node": ">=12",
+    "npm": "6"
+  },
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "pretest": "npm run test:lint",
+    "test": "npm run test:unit",
+    "posttest": "check-audit --registry 'https://registry.npmjs.org'",
+    "test:lint": "eslint . && hmpo-lintapostrophes",
+    "test:unit": "nyc _mocha"
+  },
+  "dependencies": {
+    "async": "^3.2.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "connect-redis": "^5.2.0",
+    "cookie-parser": "^1.4.5",
+    "debug": "^4.3.1",
+    "deep-clone-merge": "^1.5.2",
+    "express-session": "^1.17.0",
+    "fakeredis": "^2.0.0",
+    "frameguard": "^4.0.0",
+    "nocache": "^2.1.0",
+    "on-finished": "^2.3.0",
+    "redis": "^3.1.2",
+    "underscore": "^1.13.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "eslint": "^7.26.0",
+    "express": "^4.17.1",
+    "govuk-frontend": "^3.12.0",
+    "hmpo-components": "^3.4.1",
+    "hmpo-config": "^2.2.0",
+    "hmpo-i18n": "^5.0.1",
+    "hmpo-logger": "^4.1.3",
+    "hmpo-node-standards": "^1.11.2",
+    "husky": "^2.7.0",
+    "mocha": "^8.4.0",
+    "npm-audit-resolver": "^2.3.0",
+    "nunjucks": "^3.2.3",
+    "nyc": "^15.0.0",
+    "proxyquire": "^2.1.3",
+    "reqres": "^3.0.1",
+    "sinon": "^10.0.0",
+    "sinon-chai": "^3.6.0",
+    "sinon-test": "^3.1.0"
+  },
+  "peerDependencies": {
+    "express": ">=4",
+    "govuk-frontend": ">=3",
+    "hmpo-components": ">=3",
+    "hmpo-config": ">=2",
+    "hmpo-i18n": ">=4",
+    "hmpo-logger": ">=4",
+    "nunjucks": ">=3"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "hmpo-commitmsg '[A-Z]{3,10}'",
+      "pre-push": "hmpo-checkgit && npm test"
+    }
+  },
+  "mocha": {
+    "require": "test/unit/helper",
+    "spec": "test/unit/**/spec.*.js"
+  },
+  "nyc": {
+    "all": true,
+    "exclude": [
+      "example/**",
+      "coverage/**",
+      "test/**"
+    ],
+    "check-coverage": true,
+    "skip-full": true,
+    "temp-directory": "coverage/.nyc_output",
+    "reporter": [
+      "text-summary",
+      "text",
+      "lcov"
+    ],
+    "statements": 100,
+    "branches": 100,
+    "functions": 100,
+    "lines": 100
+  }
+}

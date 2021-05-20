@@ -1,0 +1,7 @@
+
+fieldName:
+  label: Field name
+  hint: Enter something for this field
+  validation:
+    default: 'You need to fill in this field'
+

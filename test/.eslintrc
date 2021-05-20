@@ -1,0 +1,15 @@
+{
+    "env": {
+        "node": true,
+        "es6": true,
+        "mocha": true
+    },
+    "globals": {
+        "expect": true,
+        "sinon": true,
+        "should": true,
+        "APP_ROOT": true,
+        "CONFIG_RESET": true,
+        "LOGGER_RESET": true
+    }
+}
