@@ -68,7 +68,6 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "hmpo-commitmsg '[A-Z]{3,10}'",
       "pre-push": "hmpo-checkgit && npm test"
     }
   },
