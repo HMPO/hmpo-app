@@ -33,14 +33,22 @@ const {
 });
 ```
 
-
 See example app for more details
 
-## setup()
 
-Bootstrap the app. run this as early on as possible to init the logger before it is used.
+## `setup()`
 
-### Options
+- **`setup(options)`** Bootstrap the app. run this as early on as possible to init the logger before it is used.
+
+
+### Returned object:
+
+> - **`app`** the top-level express app
+> - **`staticRouter`** an express router before session is initialised
+> - **`router`** an express router after session is initialised
+> - **`errorRouter`** an express router before the generic error handling used to handle custom errors
+
+### Options object:
 
 
 > - **`config`** if `false` no config will be loaded
@@ -55,13 +63,13 @@ Bootstrap the app. run this as early on as possible to init the logger before it
 > - **`port`** = `3000`  port to bind to. If `false` the app will not bind.
 > - **`host`** = `'0.0.0.0'`  host to bind to.
 
-> - **`logs`** = see *`hmpo-logger`* defaults  options passed to *`hmpo-logger`*. If `false` no logger is initialised.
+> - **`logs`**  see *`hmpo-logger`* defaults  options passed to *`hmpo-logger`*. If `false` no logger is initialised.
 > - **`requestLogging`** = `true`  enable request logging (excluding public static files).
 
 > - **`redis`** if `false` redis is not initialised
 >     - **`connectionString`** connection url used for connecting to a redis instance
->     - **`host`** = `127.0.0.1`  host name for connecting to a redis instance
->     - **`port`** port for connection to a redis instance
+>     - **`host`**  host name for connecting to a redis instance
+>     - **`port`** = `6379`  port for connection to a redis instance
 >     - **`...otherOptions`** any other options are passed to *`redis`*
 >     - If neither `connectionString` or `host` and `port` are specified an in-memory redis is used
 
@@ -107,14 +115,7 @@ Bootstrap the app. run this as early on as possible to init the logger before it
 
 > - **`cookies`** configuration for cookie parsing middleware
 
-### returned values
-
-- **`app`** the top-level express app
-- **`staticRouter`** an express router before session is initialised
-- **`router`** an express router after session is initialised
-- **`errorRouter`** an express router before the generic error handling used to handle custom errors
-
-## featureFlag
+## `featureFlag`
 
 - **`getFlags(req)`** return all session and config feature flags
 - **`isEnabled(flag, req)`** check if a feature flag is enabled in session or config
@@ -132,15 +133,15 @@ const disabledMiddleware = (req, res, next) => res.send('flag disabled');
 router.use(featureFlag.routeIf('flagname', enabledMiddleware, disabledMiddleware));
 ```
 
-## config
+## `config()`
 
 - **`config(path, defaultIfUndefined)`** get a value from loaded config by dot separated path, or a default if not found or undefined. Id any part of the path is not found, the default will be returned.
 
 ```
 const { config } = require('hmpo-app');
-co#nst value = config.get('config.path.string', 'default value');
+const value = config.get('config.path.string', 'default value');
 ```
-## logger
+## `logger()`
 
 - **`logger(name)`** get a new logger with an optional name
 
@@ -155,7 +156,7 @@ log.info('log message', { req, err, other: 'metedata' });
 logger().info('log message', { req, err, other: 'metedata' });
 ```
 
-## redisClient
+## `redisClient()`
 
 - **`redisClient()`** return redis client
 
