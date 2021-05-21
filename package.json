@@ -1,6 +1,6 @@
 {
   "name": "hmpo-app",
-  "version": "1.0.0rc1",
+  "version": "1.0.0",
   "description": "Bootstrap middleware and templating",
   "author": "HMPO",
   "license": "MIT",
