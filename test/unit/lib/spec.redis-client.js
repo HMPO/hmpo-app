@@ -44,6 +44,11 @@ describe('Redis Client', () => {
             redisStub.client.should.have.been.calledWithExactly('SETNAME', sinon.match.string);
         });
 
+        it('creates a new redis client using default port', () => {
+            redisClient.setup({ host: 'abc123' });
+            redis.createClient.should.have.been.calledWithExactly(6379, 'abc123', {});
+        });
+
         it('creates a new redis client with a connection string', () => {
             const client = redisClient.setup({ connectionString: 'user:pass@host:port' });
             redis.createClient.should.have.been.calledOnce;
