@@ -50,20 +50,21 @@ See example app for more details
 
 ### Options object:
 
+Any of these options (except for `config`) can also be specified in a config file. The options passed to `setup()` override the options loaded from config files.
 
 > - **`config`** if `false` no config will be loaded
 >     - **`APP_ROOT`**  override app root directory detection
 >     - **`files`** = `'config/default(.json|.yaml|.yml)'`  array of config files to try to load. Missing files will fail silently.
 >     - **`envVarName`** = `'HMPO_CONFIG'`  environment variable to parse to override config values.
 >     - **`commandLineSwitch`** = `'-c'`  command line switch to load additional config files.
->     - **`merge`** = `true`  merge calls config setup with previous calls.
+>     - **`merge`** = `true`  merge new config with config from previous calls to setup.
 
 > - **`env`** = `NODE_ENV` environment variable or `'development'`  environment.
 
-> - **`port`** = `3000`  port to bind to. If `false` the app will not bind.
+> - **`port`** = `3000`  port to bind to. If `false` the app will not listen to a port.
 > - **`host`** = `'0.0.0.0'`  host to bind to.
 
-> - **`logs`**  see *`hmpo-logger`* defaults  options passed to *`hmpo-logger`*. If `false` no logger is initialised.
+> - **`logs`**  see *`hmpo-logger`* options passed to logger. See *`hmpo-logger`* for defaults. If `false` no logger is initialised.
 > - **`requestLogging`** = `true`  enable request logging (excluding public static files).
 
 > - **`redis`** if `false` redis is not initialised
