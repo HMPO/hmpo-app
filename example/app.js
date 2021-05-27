@@ -15,6 +15,7 @@ const steps = {
 
 const fields = {
     'fieldName': {
+        type: 'text',
         validate: [ 'required' ]
     }
 };
