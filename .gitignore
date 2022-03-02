@@ -32,6 +32,7 @@ build/Release
 
 node_modules
 **/node_modules
+example/package-lock.json
 .sash-cache
 npm-debug.log
 assets/govuk_frontend_toolkit
