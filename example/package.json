@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "hmpo-app-example",
   "version": "1.0.0",
   "description": "Example hmpo-app",
   "main": "app.js",
@@ -10,21 +10,21 @@
     "build:js": "mkdir -p public/javascripts; uglifyjs node_modules/govuk-frontend/govuk/all.js node_modules/hmpo-components/all.js assets/javascripts/*.js -o public/javascripts/application.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "HMPO",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1",
-    "govuk-frontend": "^3.12.0",
-    "hmpo-app": "file:..",
-    "hmpo-components": "^4.0.0",
-    "hmpo-config": "^2.2.0",
-    "hmpo-form-wizard": "^11.10.0",
-    "hmpo-i18n": "^5.0.1",
-    "hmpo-logger": "^4.1.3",
-    "nunjucks": "^3.2.3"
+    "express": "4",
+    "govuk-frontend": "4",
+    "hmpo-app": "latest",
+    "hmpo-components": "latest",
+    "hmpo-config": "latest",
+    "hmpo-form-wizard": "latest",
+    "hmpo-i18n": "latest",
+    "hmpo-logger": "latest",
+    "nunjucks": "3"
   },
   "devDependencies": {
-    "node-sass": "^6.0.0",
-    "uglify-js": "^3.13.8"
+    "node-sass": "latest",
+    "uglify-js": "latest"
   }
 }

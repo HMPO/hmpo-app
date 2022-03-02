@@ -123,7 +123,10 @@ const middleware = {
         host = '0.0.0.0'
     } = {}) {
         app.listen(port, host, () => {
-            logger.get().info('Listening on http://:host::port', { host, port });
+            logger.get().info('Listening on http://:listen', {
+                bind: host,
+                port,
+                listen: (host === '0.0.0.0' ? 'localhost' : host) + ':' + port });
         });
     },
 
