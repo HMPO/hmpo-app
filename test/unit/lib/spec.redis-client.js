@@ -8,7 +8,8 @@ describe('Redis Client', () => {
     beforeEach( () => {
         redisStub = {
             connected: true,
-            client: sinon.stub(),
+            connect: sinon.stub(),
+            sendCommand: sinon.stub(),
             on: sinon.stub(),
             once: sinon.stub(),
             quit: sinon.stub()
@@ -38,38 +39,82 @@ describe('Redis Client', () => {
         it('creates a new redis client', () => {
             const client = redisClient.setup({ host: 'abc123', port: 123 });
             redis.createClient.should.have.been.calledOnce;
-            redis.createClient.should.have.been.calledWithExactly(123, 'abc123', {});
+            redis.createClient.should.have.been.calledWithExactly({
+                legacyMode: true,
+                socket: {
+                    port: 123,
+                    host: 'abc123'
+                }
+            });
+            redisStub.connect.should.have.been.called;
             client.should.equal(redisStub);
             redisClient.client.should.equal(client);
-            redisStub.client.should.have.been.calledWithExactly('SETNAME', sinon.match.string);
         });
 
         it('creates a new redis client using default port', () => {
             redisClient.setup({ host: 'abc123' });
-            redis.createClient.should.have.been.calledWithExactly(6379, 'abc123', {});
+            redis.createClient.should.have.been.calledWithExactly({
+                legacyMode: true,
+                socket: {
+                    port: 6379,
+                    host: 'abc123'
+                }
+            });
+            redisStub.connect.should.have.been.called;
         });
 
         it('creates a new redis client with a connection string', () => {
             const client = redisClient.setup({ connectionString: 'user:pass@host:port' });
             redis.createClient.should.have.been.calledOnce;
-            redis.createClient.should.have.been.calledWithExactly('user:pass@host:port', {});
+            redis.createClient.should.have.been.calledWithExactly({
+                legacyMode: true,
+                url: 'user:pass@host:port'
+            });
+            redisStub.connect.should.have.been.called;
             client.should.equal(redisStub);
             redisClient.client.should.equal(client);
         });
 
         it('passes other redis options to redis', () => {
             redisClient.setup({ connectionString: 'user:pass@host:port', foo: 'bar' });
-            redis.createClient.should.have.been.calledWithExactly('user:pass@host:port', { foo: 'bar'});
+            redis.createClient.should.have.been.calledWithExactly({
+                legacyMode: true,
+                foo: 'bar',
+                url: 'user:pass@host:port'
+            });
+            redisStub.connect.should.have.been.called;
         });
-
 
         it('reconnects to redis if there is an existing redis client', () => {
             redisClient.client = redisStub;
             const client = redisClient.setup({ connectionString: 'user:pass@host:port' });
             redisStub.quit.should.have.been.called;
             redis.createClient.should.have.been.calledOnce;
-            redis.createClient.should.have.been.calledWithExactly('user:pass@host:port', {});
+            redis.createClient.should.have.been.calledWithExactly({
+                legacyMode: true,
+                url: 'user:pass@host:port'
+            });
+            redisStub.connect.should.have.been.called;
             redisClient.client.should.equal(client);
+        });
+
+        it('should log an error redis error event', () => {
+            redisStub.on.withArgs('error').yields(new Error);
+            redisClient.setup({ connectionString: 'user:pass@host:port' });
+            loggerStub.error.should.have.been.called;
+        });
+
+        it('should handle connect events', () => {
+            redisStub.on.withArgs('connect').yields();
+            redisClient.setup({ connectionString: 'user:pass@host:port' });
+            loggerStub.info.should.have.been.called;
+            redisStub.sendCommand.should.have.been.calledWithExactly('CLIENT', ['SETNAME', sinon.match.string]);
+        });
+
+        it('should handle reconnect events', () => {
+            redisStub.on.withArgs('reconnecting').yields();
+            redisClient.setup({ connectionString: 'user:pass@host:port' });
+            loggerStub.info.should.have.been.called;
         });
 
         it('should create a in-memory redis server with no connection details', () => {
@@ -84,17 +129,10 @@ describe('Redis Client', () => {
             redisClient.client.should.equal(client);
         });
 
-        it('should throw on any redis error event', () => {
+        it('should log an error fake redis error event', () => {
             redisStub.on.withArgs('error').yields(new Error);
-            expect( () =>{
-                redisClient.setup();
-            }).to.throw();
-        });
-
-        it('should handle ready events', () => {
-            redisStub.once.withArgs('ready').yields();
-            redisClient.setup({ connectionString: 'user:pass@host:port' });
-            loggerStub.info.should.have.been.called;
+            redisClient.setup();
+            loggerStub.error.should.have.been.called;
         });
     });
 
