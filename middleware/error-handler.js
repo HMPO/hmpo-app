@@ -23,6 +23,11 @@ const middleware = ({
         backLink = null;
     }
 
+    if (res.finished || res._headerSent) {
+        const logger = require('../lib/logger').get();
+        return logger.error('Error after response: :clientip :verb :request :err.message', {req: req, err: err});
+    }
+
     if (err.redirect) {
         if (req.method === 'POST' || req.path.replace(/\/+$/, '') !== err.redirect) {
             return res.redirect(err.redirect);
