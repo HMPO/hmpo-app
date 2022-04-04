@@ -232,6 +232,17 @@ describe('Error Handler', () => {
                 errorhandler(err, req, res, next);
                 loggerStub.error.should.not.have.been.called;
             });
+
+            it('should only log the error if the header has been sent', () => {
+                res._headerSent = true;
+                err.template = 'test/template';
+                loggerStub.error.reset();
+                errorhandler(err, req, res, next);
+                loggerStub.error.should.have.been.calledOnce;
+                loggerStub.error.should.have.been.calledWithExactly('Error after response: :clientip :verb :request :err.message', {req: req, err: err});
+                res.render.should.not.have.been.called;
+                next.should.not.have.been.called;
+            });
         });
     });
 
