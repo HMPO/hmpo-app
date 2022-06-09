@@ -117,9 +117,14 @@ describe('middleware functions', () => {
             app.disable.should.have.been.calledWithExactly('x-powered-by');
         });
 
-        it('should enable trust proxy', () => {
+        it('should enable trust proxy by default', () => {
             middleware.setup();
-            app.enable.should.have.been.calledWithExactly('trust proxy');
+            app.set.should.have.been.calledWithExactly('trust proxy', true);
+        });
+
+        it('should eset trust proxy to config setting', () => {
+            middleware.setup({ trustProxy: ['loopback', 'localunique']});
+            app.set.should.have.been.calledWithExactly('trust proxy', ['loopback', 'localunique']);
         });
 
         it('should use the returned frameguard middleware', () => {

@@ -15,6 +15,7 @@ const middleware = {
         publicImagesDirs,
         public: publicOptions,
         disableCompression = false,
+        trustProxy = true,
         requestLogging = true,
         views,
         locales,
@@ -55,7 +56,7 @@ const middleware = {
 
         // security and headers
         app.disable('x-powered-by');
-        app.enable('trust proxy');
+        app.set('trust proxy', trustProxy);
         app.use(frameguard('sameorigin'));
         app.use(nocache.middleware({ publicPath: urls.public }));
         app.use(compatibility.middleware());
