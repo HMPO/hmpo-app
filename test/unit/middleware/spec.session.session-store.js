@@ -62,7 +62,46 @@ describe('Session', () => {
                     secret: 'very-secret',
                 }));
             });
-        });
 
+            context('with cookieOptions', () => {
+                let cookieOptions;
+
+                it('should add additional properties', () => {
+                    cookieOptions = {
+                        domain: '.example.com'
+                    };
+
+                    session.middleware({cookieOptions, sessionStore });
+
+                    expect(expressSession).to.have.been.calledWith(sinon.match({
+                        cookie: { domain: '.example.com'}
+                    }));
+                });
+
+                it('should allow override of existing options', () => {
+                    cookieOptions = {
+                        secure: 'false'
+                    };
+
+                    session.middleware({cookieOptions, sessionStore });
+
+                    expect(expressSession).to.have.been.calledWith(sinon.match({
+                        cookie: { secure: 'false'}
+                    }));
+                });
+
+                it('should not change properties unless overriden', () => {
+                    cookieOptions = {
+                        domain: '.example.com'
+                    };
+
+                    session.middleware({cookieOptions, sessionStore });
+
+                    expect(expressSession).to.have.been.calledWith(sinon.match({
+                        cookie: { secure: 'auto'}
+                    }));
+                });
+            });
+        });
     });
 });

@@ -5,7 +5,8 @@ const middleware = ({
     cookieName = 'hmpo.sid',
     secret = 'not-secret',
     ttl = 30000,
-    sessionStore
+    sessionStore,
+    cookieOptions = {}
 } = {}) => {
     if (!sessionStore) {
         const RedisStore = require('connect-redis')(expressSession);
@@ -18,7 +19,8 @@ const middleware = ({
     const session = expressSession({
         store: sessionStore,
         cookie: {
-            secure: 'auto'
+            secure: 'auto',
+            ...cookieOptions
         },
         key: cookieName,
         secret: secret,
