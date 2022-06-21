@@ -132,6 +132,11 @@ describe('hmpo-app', () => {
             index.middleware.errorHandler.should.not.have.been.called;
         });
 
+        it('should call hostCallBackMiddlewareSetup if option is defined', () => {
+            const callBackStub = sinon.stub();
+            index.setup({ hostCallBackMiddlewareSetup: callBackStub});
+            callBackStub.should.have.been.called;
+        });
 
         it('calls middleware.listen with options', () => {
             index.config.get.withArgs('host').returns('hostname');
