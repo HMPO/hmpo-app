@@ -4,7 +4,9 @@ const logger = require('./lib/logger');
 const middleware = require('./middleware');
 const redisClient = require('./lib/redis-client');
 
-const setup = (options = {}) => {
+const setup = (options = {
+    callHostPreRouterMiddleware: undefined
+}) => {
     if (options.config !== false) config.setup(options.config);
 
     if (options.logs !== false) logger.setup({
@@ -21,6 +23,10 @@ const setup = (options = {}) => {
         ...config.get(),
         ...options
     });
+
+    if (options.callHostPreRouterMiddleware && typeof options.callHostPreRouterMiddleware === 'function') {
+        options.callHostPreRouterMiddleware(app);
+    }
 
     const staticRouter = express.Router();
     app.use(staticRouter);
