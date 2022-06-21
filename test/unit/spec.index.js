@@ -22,7 +22,8 @@ describe('hmpo-app', () => {
 
         beforeEach(() => {
             app = {
-                use: sinon.stub()
+                use: sinon.stub(),
+                get: sinon.stub()
             };
             sinon.stub(express, 'Router');
             express.Router.onCall(0).returns('staticRouter');
@@ -106,7 +107,8 @@ describe('hmpo-app', () => {
             index.setup({ session: { option: true } });
             index.middleware.session.should.have.been.calledWithExactly(app, {
                 option: true,
-                config: true
+                config: true,
+                trustProxy: undefined
             });
         });
 
