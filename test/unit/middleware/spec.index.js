@@ -184,9 +184,9 @@ describe('middleware functions', () => {
         });
 
         it('should setup headers', () => {
-            middleware.setup({ disableCompression: true, trustProxy: ['localhost'], urls: { public: '/static'} });
+            middleware.setup({ disableCompression: true, trustProxy: ['localhost'], urls: { public: '/static'}, helmet: { referrerPolicy: { policy: 'no-referrer' } } });
 
-            stubs.headers.setup.should.have.been.calledWithExactly(app, { disableCompression: true, trustProxy: ['localhost'], publicPath: '/static'});
+            stubs.headers.setup.should.have.been.calledWithExactly(app, { disableCompression: true, trustProxy: ['localhost'], publicPath: '/static', helmet: { referrerPolicy: { policy: 'no-referrer' } }});
         });
 
         it('should setup hmpoComponents', () => {
