@@ -5,7 +5,7 @@ const middleware = require('./middleware');
 const redisClient = require('./lib/redis-client');
 
 const setup = (options = {
-    hostCallBackMiddlewareSetup: undefined
+    middlewareSetupFn: undefined
 }) => {
     if (options.config !== false) config.setup(options.config);
 
@@ -24,8 +24,8 @@ const setup = (options = {
         ...options
     });
 
-    if (options.hostCallBackMiddlewareSetup && typeof options.hostCallBackMiddlewareSetup === 'function') {
-        options.hostCallBackMiddlewareSetup(app);
+    if (options.middlewareSetupFn && typeof options.middlewareSetupFn === 'function') {
+        options.middlewareSetupFn(app);
     }
 
     const staticRouter = express.Router();
