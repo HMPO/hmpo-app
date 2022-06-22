@@ -33,8 +33,7 @@ const setup = (options = {
 
     if (options.session !== false) middleware.session(app, {
         ...config.get('session'),
-        ...options.session,
-        trustProxy: app.get('trust proxy')
+        ...options.session
     });
 
     const router = express.Router();

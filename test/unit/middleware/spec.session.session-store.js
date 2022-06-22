@@ -43,7 +43,6 @@ describe('Session', () => {
                     key: 'hmpo.sid',
                     secret: 'not-secret',
                     resave: true,
-                    proxy: undefined,
                     saveUninitialized: true
                 });
             });
