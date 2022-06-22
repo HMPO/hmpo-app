@@ -38,16 +38,11 @@ describe('middleware functions', () => {
                 bodyParser: {
                     urlencoded: sinon.stub().returns('bodyParser middleware')
                 },
-                frameguard: sinon.stub().returns('frameguard middleware'),
-                compression: sinon.stub().returns('compression middleware'),
                 cookies: {
                     middleware: sinon.stub().returns('cookies middleware')
                 },
-                nocache: {
-                    middleware: sinon.stub().returns('nocache middleware')
-                },
-                compatibility: {
-                    middleware: sinon.stub().returns('compatibility middleware')
+                headers: {
+                    setup: sinon.stub().returns({})
                 },
                 healthcheck: {
                     middleware: sinon.stub().returns('healthcheck middleware')
@@ -77,17 +72,14 @@ describe('middleware functions', () => {
 
             middleware = proxyquire(APP_ROOT + '/middleware', {
                 'express': stubs.express,
-                'frameguard': stubs.frameguard,
                 'body-parser': stubs.bodyParser,
-                'compression': stubs.compression,
                 'hmpo-logger': stubs.hmpoLogger,
                 'hmpo-components': stubs.hmpoComponents,
                 './nunjucks': stubs.nunjucks,
                 './public': stubs.public,
                 './translation': stubs.translation,
-                './nocache': stubs.nocache,
+                './headers': stubs.headers,
                 './healthcheck': stubs.healthcheck,
-                './compatibility': stubs.compatibility,
                 './model-options': stubs.modelOptions,
                 './version': stubs.version,
                 './cookies': stubs.cookies,
@@ -112,54 +104,6 @@ describe('middleware functions', () => {
             app.set.should.have.been.calledWithExactly('env', 'production');
         });
 
-        it('should disable the x-powered-by header', () => {
-            middleware.setup();
-            app.disable.should.have.been.calledWithExactly('x-powered-by');
-        });
-
-        it('should enable trust proxy by default', () => {
-            middleware.setup();
-            app.set.should.have.been.calledWithExactly('trust proxy', true);
-        });
-
-        it('should eset trust proxy to config setting', () => {
-            middleware.setup({ trustProxy: ['loopback', 'localunique']});
-            app.set.should.have.been.calledWithExactly('trust proxy', ['loopback', 'localunique']);
-        });
-
-        it('should use the returned frameguard middleware', () => {
-            middleware.setup();
-            stubs.frameguard.should.have.been.calledOnce;
-            stubs.frameguard.should.have.been.calledWithExactly('sameorigin');
-            app.use.should.have.been.calledWithExactly('frameguard middleware');
-        });
-
-        it('should use the nocache middleware', () => {
-            middleware.setup();
-            stubs.nocache.middleware.should.have.been.calledWithExactly({
-                publicPath: '/public'
-            });
-            app.use.should.have.been.calledWithExactly('nocache middleware');
-        });
-
-        it('should use the returned compression middleware', () => {
-            middleware.setup();
-            stubs.compression.should.have.been.calledOnce;
-            stubs.compression.should.have.been.calledWithExactly();
-            app.use.should.have.been.calledWithExactly('compression middleware');
-        });
-
-        it('should not use the returned compression middleware if compression is disabled', () => {
-            middleware.setup({ disableCompression: true });
-            stubs.compression.should.not.have.been.called;
-            app.use.should.not.have.been.calledWithExactly('compression middleware');
-        });
-
-        it('should use the compatibility middleware', () => {
-            middleware.setup();
-            stubs.compatibility.middleware.should.have.been.calledWithExactly();
-            app.use.should.have.been.calledWithExactly('compatibility middleware');
-        });
 
         it('should use the /version middleware', () => {
             middleware.setup();
@@ -237,6 +181,12 @@ describe('middleware functions', () => {
         it('should setup translation', () => {
             middleware.setup({ locales: 'a/dir', translation: { additional: 'options' } });
             stubs.translation.setup.should.have.been.calledWithExactly(app, { locales: 'a/dir', additional: 'options' });
+        });
+
+        it('should setup headers', () => {
+            middleware.setup({ disableCompression: true, trustProxy: ['localhost'], urls: { public: '/static'} });
+
+            stubs.headers.setup.should.have.been.calledWithExactly(app, { disableCompression: true, trustProxy: ['localhost'], publicPath: '/static'});
         });
 
         it('should setup hmpoComponents', () => {

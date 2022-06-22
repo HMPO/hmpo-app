@@ -24,12 +24,8 @@ const middleware = {
         modelOptions: modelOptionsConfig,
         cookies: cookieOptions
     } = {}) {
-        const frameguard = require('frameguard');
-        const nocache = require('./nocache');
-        const compression = require('compression');
         const hmpoLogger = require('hmpo-logger');
         const healthcheck = require('./healthcheck');
-        const compatibility = require('./compatibility');
         const modelOptions = require('./model-options');
         const featureFlag = require('./feature-flag');
         const version = require('./version');
@@ -39,6 +35,7 @@ const middleware = {
         const hmpoComponents = require('hmpo-components');
         const public = require('./public');
         const nunjucks = require('./nunjucks');
+        const headers = require('./headers');
 
         urls.public = urls.public || '/public';
         urls.publicImages = urls.publicImages || path.posix.join(urls.public, '/images');
@@ -55,12 +52,11 @@ const middleware = {
         app.set('dev', env !== 'production');
 
         // security and headers
-        app.disable('x-powered-by');
-        app.set('trust proxy', trustProxy);
-        app.use(frameguard('sameorigin'));
-        app.use(nocache.middleware({ publicPath: urls.public }));
-        app.use(compatibility.middleware());
-        if (!disableCompression) app.use(compression());
+        headers.setup(app, {
+            disableCompression,
+            trustProxy,
+            publicPath: urls.public
+        });
 
         // version, healthcheck
         if (urls.version) app.get(urls.version, version.middleware());
