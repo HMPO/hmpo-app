@@ -107,8 +107,7 @@ describe('hmpo-app', () => {
             index.setup({ session: { option: true } });
             index.middleware.session.should.have.been.calledWithExactly(app, {
                 option: true,
-                config: true,
-                trustProxy: undefined
+                config: true
             });
         });
 

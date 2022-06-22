@@ -6,8 +6,7 @@ const middleware = ({
     secret = 'not-secret',
     ttl = 30000,
     sessionStore,
-    cookieOptions = {},
-    trustProxy
+    cookieOptions = {}
 } = {}) => {
     if (!sessionStore) {
         const RedisStore = require('connect-redis')(expressSession);
@@ -26,7 +25,6 @@ const middleware = ({
         key: cookieName,
         secret: secret,
         resave: true,
-        proxy: trustProxy,
         saveUninitialized: true
     });
 
