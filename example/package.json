@@ -14,7 +14,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "4",
-    "govuk-frontend": "4",
+    "govuk-frontend": "4.0.x",
     "hmpo-app": "latest",
     "hmpo-components": "latest",
     "hmpo-config": "latest",
