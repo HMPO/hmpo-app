@@ -112,6 +112,7 @@ Any of these options (except for `config`) can also be specified in a config fil
 >     - **`sessionIDHeader`** = `'X-SESSION-ID'`  session ID request header to pass through to models.
 >     - **`scenarioIDHeader`** = `'X-SCENARIO-ID'`  stub scenario ID request header to pass through to models.
 
+> - **`helmet`** configuration for [Helmet](https://helmetjs.github.io/), or `false` to only use frameguard and disable `x-powered-by`.  
 > - **`disableCompression`** = `false`  disable compression middleware.
 
 > - **`cookies`** configuration for cookie parsing middleware
