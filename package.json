@@ -30,6 +30,7 @@
     "express-session": "^1.17.3",
     "fakeredis": "^2.0.0",
     "frameguard": "^4.0.0",
+    "helmet": "5.1.0",
     "nocache": "^3.0.4",
     "on-finished": "^2.4.1",
     "redis": "4.0.x",

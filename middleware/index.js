@@ -17,6 +17,7 @@ const middleware = {
         disableCompression = false,
         trustProxy = true,
         requestLogging = true,
+        helmet,
         views,
         locales,
         nunjucks: nunjucksOptions,
@@ -55,7 +56,8 @@ const middleware = {
         headers.setup(app, {
             disableCompression,
             trustProxy,
-            publicPath: urls.public
+            publicPath: urls.public,
+            helmet
         });
 
         // version, healthcheck
