@@ -5,7 +5,6 @@ chai.use(require('sinon-chai'));
 global.should = chai.should();
 global.expect = chai.expect;
 global.sinon = require('sinon');
-sinon.test = require('sinon-test')(sinon);
 global.APP_ROOT = resolve(__dirname, '..', '..');
 
 global.CONFIG_RESET = () => {
