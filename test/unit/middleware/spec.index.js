@@ -123,7 +123,8 @@ describe('middleware functions', () => {
                     public: '/public-url'
                 },
                 publicDirs: ['public'],
-                publicImagesDirs: ['assets/images']
+                publicImagesDirs: ['assets/images'],
+                public: { maxAge: 3600 }
             });
             stubs.public.middleware.should.have.been.calledWithExactly({
                 urls: {
@@ -134,7 +135,8 @@ describe('middleware functions', () => {
                     healthcheck: '/healthcheck'
                 },
                 publicDirs: ['public'],
-                publicImagesDirs: ['assets/images']
+                publicImagesDirs: ['assets/images'],
+                public: { maxAge: 3600 }
             });
             app.use.should.have.been.calledWithExactly('public middleware');
         });

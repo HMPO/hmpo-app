@@ -69,7 +69,7 @@ const middleware = {
             urls,
             publicDirs,
             publicImagesDirs,
-            ...publicOptions
+            public: publicOptions
         }));
 
         app.use(featureFlag.middleware({ featureFlags }));
