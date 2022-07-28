@@ -40,7 +40,6 @@ const middleware = {
 
         urls.public = urls.public || '/public';
         urls.publicImages = urls.publicImages || path.posix.join(urls.public, '/images');
-        urls.govukAssetPath = urls.govukAssetPath || path.posix.join(urls.public, '/govuk-assets');
         urls.version = urls.version === undefined ? '/version' : urls.version;
         urls.healthcheck = urls.healthcheck === undefined ? '/healthcheck' : urls.healthcheck;
 
@@ -83,7 +82,6 @@ const middleware = {
         Object.assign(app.locals, {
             baseUrl: '/',
             assetPath: urls.public,
-            govukAssetPath: urls.govukAssetPath,
             urls: urls
         });
 
