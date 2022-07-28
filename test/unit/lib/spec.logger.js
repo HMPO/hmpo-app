@@ -37,12 +37,12 @@ describe('Logger', () => {
     describe('get', () => {
         it('returns a named logger', () => {
             logger.get('name');
-            hmpoLogger.get.should.have.been.calledWithExactly('name');
+            hmpoLogger.get.should.have.been.calledWithExactly('name', 2);
         });
 
         it('returns a default logger', () => {
             logger.get();
-            hmpoLogger.get.should.have.been.calledWithExactly(':hmpo-app');
+            hmpoLogger.get.should.have.been.calledWithExactly(':hmpo-app', 2);
         });
     });
 

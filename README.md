@@ -83,7 +83,6 @@ Any of these options (except for `config`) can also be specified in a config fil
 > - `urls`
 >     - **`public`** = `'/public'`  base URL for public static assets.
 >     - **`publicImages`** = `'/public/images'`  base URL for public sttic images.
->     - **`govukAssetPath`** = `'/public/govuk-assets'`  base URL for govuk-frontend static assets.
 >     - **`version`** = `'/version'`  base URL for version endpoint, or `false` to disable.
 >     - **`healthcheck`** = `'/healthcheck'`  base URL for healthcheck endpoint, or `false` to disable.
 

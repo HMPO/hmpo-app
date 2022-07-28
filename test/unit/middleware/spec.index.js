@@ -130,7 +130,6 @@ describe('middleware functions', () => {
                 urls: {
                     public: '/public-url',
                     publicImages: '/public-url/images',
-                    govukAssetPath: '/public-url/govuk-assets',
                     version: '/version',
                     healthcheck: '/healthcheck'
                 },
@@ -204,10 +203,8 @@ describe('middleware functions', () => {
                 existing: 'local',
                 baseUrl: '/',
                 assetPath: '/public',
-                govukAssetPath: '/public/govuk-assets',
                 urls: {
                     foo: 'bar',
-                    govukAssetPath: '/public/govuk-assets',
                     healthcheck: '/healthcheck',
                     public: '/public',
                     publicImages: '/public/images',
