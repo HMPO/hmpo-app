@@ -89,7 +89,6 @@ describe('headers middleware', () => {
             it('should use the returned frameguard middleware', () => {
                 middleware.setup(app);
 
-                console.log(stubs.helmet);
                 stubs.helmet.frameguard.should.have.been.calledOnce;
                 stubs.helmet.frameguard.should.have.been.calledWithExactly('sameorigin');
                 app.use.should.have.been.calledWithExactly('frameguard middleware');
