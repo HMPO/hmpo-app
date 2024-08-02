@@ -7,7 +7,7 @@
     "start": "node app.js",
     "postinstall": "npm run build",
     "build": "npm run build:sass && npm run build:js",
-    "build:sass": "mkdir -p public/stylesheets; node-sass assets/stylesheets/app.scss --output-style compressed public/stylesheets/application.css",
+    "build:sass": "mkdir -p public/stylesheets; sass -q -I . -s compressed --no-source-map assets/stylesheets/app.scss public/stylesheets/application.css",
     "build:js": "mkdir -p public/javascripts; uglifyjs node_modules/govuk-frontend/govuk/all.js node_modules/hmpo-components/all.js assets/javascripts/*.js -o public/javascripts/application.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -25,7 +25,7 @@
     "nunjucks": "3"
   },
   "devDependencies": {
-    "node-sass": "latest",
+    "sass": "latest",
     "uglify-js": "latest"
   }
 }
