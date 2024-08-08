@@ -1,0 +1,21 @@
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "hmpo-html/macro.njk" import hmpoHtml %}
+
+{% extends "app-template.njk" %}
+
+{% set titleHtml %}
+    <h1 class="govuk-panel__title" style="color: #fff">{{ translate("pages.done.title") }}</h1>
+{% endset %}
+
+{% block hmpoContent %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {{ govukPanel({
+                titleHtml: titleHtml,
+                html: translate("pages.done.panelContent")
+            }) }}
+
+            {{ hmpoHtml(translate("pages.done.content")) }}
+        </div>
+    </div>
+{% endblock%}

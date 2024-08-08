@@ -1,12 +1,39 @@
+eligible:
+  title: You are eligible to use this service
+  content: "## How to apply"
+  bullets:
+    - title: Enter your details
+      text: Enter all the required details that we ask for.
+    - title: Make a payment
+      text: It costs £{{ cost }}.
+    - title: Track your application
+      text: We'll send you updates by email or text. You can also log in to track your application.
 
-firstPage:
-  title: First page
-  content:
-    - This is the first page.
-    - 'You will need to:'
-    - - fill in the field on this page
-    - - submit the form
+ineligible:
+  title: You are not eligible to use this service
+  content: This is because you live outside of the UK.
+
+name:
+  title: Name
+
+confirm:
+  title: Check and submit your answers
+  rows:
+    title:
+      key: Title
+    name:
+      key: Name
+    dateOfBirth:
+      key: Date of birth
+  change: Change
+
+submit:
+  title: Submitting
+  content: Please wait while we submit your application
 
 done:
-    title: Completed
-    content: 'You have entered: {{ values.fieldName }}'
+  title: Application submitted
+  panelContent: Your reference number<br /><strong>{{ values.reference }}</strong>
+  content:
+    - "## What happens next"
+    - Some instructions about what happens next.

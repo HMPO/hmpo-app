@@ -1,0 +1,14 @@
+{% extends "form-template.njk" %}
+
+{% block mainContentBody %}
+    {{ super() }}
+
+    <ol class="govuk-list govuk-list--number govuk-heading-s">
+        {% for item in translate("pages.eligible.bullets") %}
+            <li>
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.text }}</p>
+            </li>
+        {% endfor %}
+    </ol>
+{% endblock %}

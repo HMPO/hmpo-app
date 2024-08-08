@@ -1,0 +1,52 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "hmpo-submit/macro.njk" import hmpoSubmit %}
+
+{% extends "form-template.njk" %}
+
+{% set contentPrefix = "pages.confirm." %}
+
+{% block innerContent %}
+    {{ govukSummaryList({
+        rows: [
+            {
+                key: { text: translate(contentPrefix + "rows.dateOfBirth.key") },
+                value: { text: values.dateOfBirth | date("D MMMM YYYY") },
+                actions: {
+                    items: [{
+                        href: "/eligibility/date-of-birth/edit",
+                        text: translate(contentPrefix + "change"),
+                        visuallyHiddenText: translate(contentPrefix + "rows.name.key")
+                    }]
+                }
+            },
+            {
+                key: { text: translate(contentPrefix + "rows.title.key") },
+                value: { text: values.title },
+                actions: {
+                    items: [{
+                        href: "/apply/name/edit",
+                        text: translate(contentPrefix + "change"),
+                        visuallyHiddenText: translate(contentPrefix + "rows.title.key")
+                    }]
+                }
+            },
+            {
+                key: { text: translate(contentPrefix + "rows.name.key") },
+                value: { text: values.forenames + " " + values.surname },
+                actions: {
+                    items: [{
+                        href: "/apply/name/edit",
+                        text: translate(contentPrefix + "change"),
+                        visuallyHiddenText: translate(contentPrefix + "rows.name.key")
+                    }]
+                }
+            }
+        ]
+    }) }}
+{% endblock %}
+
+{% block submitButton %}
+    {{ hmpoSubmit(ctx, {
+        key: "submit"
+    }) }}
+{% endblock %}
