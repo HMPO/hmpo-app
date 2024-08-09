@@ -1,10 +1,14 @@
-
 port: 3000
 
 logs:
-  console: true
   app: false
   error: false
 
-# redis:
-#   host: localhost
+adultYears: 18
+costs:
+  ADULT: 50
+  CHILD: 30
+
+services:
+  submission:
+    url: http://localhost:3000/api/submit

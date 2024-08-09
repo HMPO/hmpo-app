@@ -1,0 +1,14 @@
+{% extends "hmpo-template.njk" %}
+
+{% block beforeContent %}
+    {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+
+    {{ govukPhaseBanner({
+        tag: {
+            text: "Not real"
+        },
+        html: 'This is not a real GOV.UK service.'
+    }) }}
+
+    {{ super() }}
+{% endblock %}

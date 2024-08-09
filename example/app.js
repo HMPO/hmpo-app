@@ -1,27 +1,22 @@
-
-const HmpoFormWizard = require('hmpo-form-wizard');
 const { setup } = require('hmpo-app');
-const { router } = setup({ config: { APP_ROOT: __dirname } });
+const express = require('express');
 
+const { app, staticRouter, router } = setup({ config: { APP_ROOT: __dirname } });
 
-const steps = {
-    '/': {
-        entryPoint: true,
-        fields: [ 'fieldName' ],
-        next: 'done'
-    },
-    '/done': {}
-};
+// Override template file extension from .html to .njk
+app.set('view engine', 'njk');
 
-const fields = {
-    'fieldName': {
-        type: 'text',
-        validate: [ 'required' ]
-    }
-};
-
-const wizard = new HmpoFormWizard(steps, fields, {
-    name: 'example-form-name'
+// Mock API to submit data to
+staticRouter.use(express.json());
+staticRouter.post('/api/submit', (req, res) => {
+    console.log(`Mock submit API received data: ${JSON.stringify(req.body, null, 2)}`);
+    setTimeout(() => {
+        res.json({
+            reference: Math.round(100000 + Math.random() * 100000)
+        });
+    }, 1000);
 });
 
-router.use('/', wizard);
+router.use('/eligibility', require('./routes/eligibility'));
+router.use('/apply', require('./routes/apply'));
+router.get('/', (req, res) => res.redirect('/eligibility'));

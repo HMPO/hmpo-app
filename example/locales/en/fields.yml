@@ -1,7 +1,46 @@
+default:
+  items:
+    true:
+      label: Yes
+    false:
+      label: No
 
-fieldName:
-  label: Field name
-  hint: Enter something for this field
+date-day:
+  label: Day
+date-month:
+  label: Month
+date-year:
+  label: Year
+
+uk:
+  label: Do you live in the UK?
   validation:
-    default: 'You need to fill in this field'
+    required: Tell us whether you live in the UK
 
+dateOfBirth:
+  label: Date of birth
+  hint: For example, 20 01 2004
+
+title:
+  label: Title
+  items:
+    Mr:
+      label: Mr
+    Mrs:
+      label: Mrs
+    Miss:
+      label: Miss
+    Ms:
+      label: Ms
+    Master:
+      label: Master
+    Other:
+      label: Other
+  validation:
+    required: Tell us your {{ name }}
+
+forenames:
+  label: First and middle names
+
+surname:
+  label: Last name

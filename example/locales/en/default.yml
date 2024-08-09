@@ -1,10 +1,30 @@
-
 buttons:
   next: Continue
+  submit: Submit
+
 govuk:
-  serviceName: My first service
+  serviceName: Apply for something
   backLink: Back
   errorSummaryTitle: There’s a problem
   error: Error
   warning: Warning
   skipLink: Skip to main content
+
+validation:
+  required: Enter a {{ name }}
+  required-day: Enter a complete {{ name }}
+  required-month: Enter a complete {{ name }}
+  required-year: Enter a complete {{ name }}
+  date: Enter a valid {{ name }}
+  date-day: Enter a valid day
+  date-month: Enter a valid month
+  date-year: Enter a valid year
+  numeric: Enter a {{ name }} using numbers only
+  numeric-day: Enter a day using numbers only
+  numeric-month: Enter a month using numbers only
+  numeric-year: Enter a year using numbers only
+  before: Enter a {{ name }} in the past
+  alphanumex1: Enter only common characters including . , ' - & /
+  alphaex1: Your {{ name }} must only contain letters, hyphens and apostrophes
+  minlength: Your {{ name }} must be at least {{ minlength }} characters long
+  maxlength: Your {{ name }} must be less than {{ maxlength }} characters long

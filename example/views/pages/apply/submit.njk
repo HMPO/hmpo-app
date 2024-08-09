@@ -1,0 +1,27 @@
+{% from "hmpo-html/macro.njk" import hmpoHtml %}
+{% from "hmpo-form/macro.njk" import hmpoForm %}
+{% from "hmpo-auto-submit/macro.njk" import hmpoAutoSubmit %}
+
+{% extends "app-template.njk" %}
+
+{% set hmpoPageKey = "submit" %}
+
+{% set content %}
+    <h1 id="spinner-header" data-page="{{ hmpoPageKey }}">{{ translate("pages." + hmpoPageKey + ".title") }}</h1>
+    {{ hmpoHtml(translate("pages." + hmpoPageKey + ".content")) }}
+{% endset %}
+
+{% block hmpoContent %}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            {% call hmpoForm(ctx) %}
+                {{ hmpoAutoSubmit(ctx, {
+                    cloneForm: true,
+                    submitDelay: 500,
+                    manualDelay: 60000,
+                    html: content
+                }) }}
+            {% endcall %}
+        </div>
+    </div>
+{% endblock %}
