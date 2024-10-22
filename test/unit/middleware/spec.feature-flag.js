@@ -26,7 +26,7 @@ describe('Feature Flag', () => {
             }
         };
 
-        res = require('reqres').res();
+        res = require('hmpo-reqres').res();
         res.redirect = sinon.stub();
         next = sinon.stub();
 

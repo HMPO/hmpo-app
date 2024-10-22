@@ -1,5 +1,5 @@
 const middleware = require(APP_ROOT + '/middleware/error-handler').middleware;
-const request = require('reqres').req;
+const request = require('hmpo-reqres').req;
 
 describe('Error Handler', () => {
 
