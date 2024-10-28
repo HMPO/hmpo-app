@@ -1,4 +1,4 @@
-const public = require(APP_ROOT + '/middleware/public').middleware;
+const publicMiddleware = require(APP_ROOT + '/middleware/public').middleware;
 const express = require('express');
 
 describe('Public static assets', () => {
@@ -20,13 +20,13 @@ describe('Public static assets', () => {
 
     describe('middleware', () => {
         it('creates and returns a router', () => {
-            const router = public();
+            const router = publicMiddleware();
             express.Router.should.have.been.called;
             router.should.equal(router);
         });
 
         it('adds default public directories', () => {
-            const router = public();
+            const router = publicMiddleware();
 
             express.static.should.have.callCount(4);
             router.use.should.have.callCount(4);

@@ -34,7 +34,7 @@ const middleware = {
         const bodyParser = require('body-parser');
         const translation = require('./translation');
         const hmpoComponents = require('hmpo-components');
-        const public = require('./public');
+        const publicMiddleware = require('./public');
         const nunjucks = require('./nunjucks');
         const headers = require('./headers');
 
@@ -64,7 +64,7 @@ const middleware = {
         if (urls.healthcheck) app.get(urls.healthcheck, healthcheck.middleware());
 
         // public static assets
-        if (publicOptions !== false) app.use(public.middleware({
+        if (publicOptions !== false) app.use(publicMiddleware.middleware({
             urls,
             publicDirs,
             publicImagesDirs,

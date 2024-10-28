@@ -19,10 +19,10 @@ describe('No Cache', () => {
             nocache.middleware()(req, res, next);
 
             res.setHeader.should.have.been.called;
-            res.setHeader.should.have.been.calledWithExactly('Surrogate-Control', 'no-store');
-            res.setHeader.should.have.been.calledWithExactly('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-            res.setHeader.should.have.been.calledWithExactly('Pragma', 'no-cache');
-            res.setHeader.should.have.been.calledWithExactly('Expires', '0');
+            res.setHeader.getCall(0).should.have.been.calledWithExactly('Surrogate-Control', 'no-store');
+            res.setHeader.getCall(1).should.have.been.calledWithExactly('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+            res.setHeader.getCall(2).should.have.been.calledWithExactly('Pragma', 'no-cache');
+            res.setHeader.getCall(3).should.have.been.calledWithExactly('Expires', '0');
 
             next.should.have.been.calledOnce;
             next.should.have.been.calledWithExactly();
