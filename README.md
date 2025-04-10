@@ -162,13 +162,6 @@ router.use(featureFlag.routeIf('flagname', enabledMiddleware, disabledMiddleware
 
 ## [`config`](/lib/config.js)
 
-### TODO - Talk About...
-
-- defaultFiles export
-- setup export (exported method)
-- get export (exported method)
-- How Object.assign() in config.js allows for config() or config.get(). They behave the same. config.setup(), config.defaultFiles are also made available.
-
 A config helper returned from `require('hmpo-app')`.
 
 ### Returns
@@ -193,7 +186,7 @@ A config helper returned from `require('hmpo-app')`.
 }`
 - Defaults to empty Object if no options provided.
 
-**`get(path, defaultIfUndefined)`** - Get a value from loaded config by dot separated path, or a default if not found or undefined. If any part of the path is not found, the default will be returned.
+**`get(path, defaultIfUndefined)` / `config(path, defaultIfUndefined)`** - Get a value from loaded config by dot separated path, or a default if not found or undefined. If any part of the path is not found, the default will be returned.
 
 ### Example Usage
 
@@ -208,25 +201,54 @@ if (options.config !== false) config.setup(options.config);
 const value = config.get('config.path.string', 'default value');
 ```
 
+Due to the way [config.js](/lib/config.js) uses `Object.assign()`, you can use `config(path, defaultIfUndefined)` and `config.get(path, defaultIfUndefined)` interchangeably - depending on which you find better for readability.
+
+E.g.
+
+```javascript
+const value = config('config.path.string', 'default value');
+
+// OR
+
+const value = config.get('config.path.string', 'default value');
+```
+
 ## `logger`
 
-### TODO - Talk About...
+### Returns
 
-- setup export (exported method)
-- get export (exported method)
-- How Object.assign() in logger.js allows for logger() or logger.get(). They behave the same. logger.setup() is also made available.
+**`setup(options?)`** - Setup the logger by passing an options `Object`. If no options are supplied it will default to checking `config.get('logs', {})`. This passes the provided options directly to `hmpoLogger.config()`.
 
-**`logger(name)`** get a new logger with an optional name
+**`get(name?, level?)` / `logger(name?, level?)`** - Get a new logger with an optional name (defaults to `:hmpo-app`) and an optional level (defaults to `1`).
 
 ```javascript
 const { logger } = require('hmpo-app');
 
+logger.setup(); // Setup from config.
+
+// or
+
+logger.setup({ foo: 'bar' });   // Setup from options
+
 const log = logger(':name');
+
 log.info('log message', { req, err, other: 'metedata' });
 
 // or
 
 logger().info('log message', { req, err, other: 'metedata' });
+```
+
+Due to the way [logger.js](/lib/logger.js) uses `Object.assign()`, you can use `logger(name)` and `logger.get(name)` interchangeably - depending on which you find better for readability.
+
+E.g.
+
+```javascript
+const myLogger1 = logger('logger1');
+
+// OR
+
+const myLogger2 = logger.get('logger2');
 ```
 
 ## `redisClient`
@@ -237,9 +259,46 @@ logger().info('log message', { req, err, other: 'metedata' });
 - getClient export (exported method)
 - How Object.assign() in redis-client.js allows for redisClient() or redisClient.getClient(). They behave the same. redisClient.setup(), redisClient.client, and redisClient.close() are also made available.
 
-**`redisClient()`** return redis client
+### Returns
+
+**`redisClient()` / `getClient()`** - Returns a redis client.
+
+**`client`** - The redisClient, defaults to `null`.
+
+**`setup(options?)`** - Returns a modified `redisClient.client`.
+
+- Closes an existing client using provided `close()` and creates a new one using the provided options.
+- All options are passed to `redis.createClient()`. See [Node Redis Docs](https://redis.io/docs/latest/develop/clients/nodejs/) for more info.
+- If no `options` specified, this will default to checking `config.get('redis', {})`.
+- `options` assumes the following parameters: `{ connectionString, host, port = 6379, ...redisOptions }`
+
+**`close(callback)`** - Quits a redisClient if it exists / is connected, then sets `redisClient.client = null`. Finally, fires the provided callback function.
+
+Due to the way [redis-client.js](/lib/redis-client.js) uses `Object.assign()`, you can use `redisClient()` and `redisClient.getClient()` interchangeably - depending on which you find better for readability.
 
 ```javascript
 const { redisClient } = require('hmpo-app');
-redisClient().set('key', 'value');
+
+// Setup the Redis client
+redisClient.setup({
+    connectionString: 'redis://localhost:6379',
+    // OR
+    host: 'localhost',
+    port: 6379,
+    // Optional: any other redis.createClient options
+    socket: {
+        reconnectStrategy: retries => Math.min(retries * 50, 2000)
+    }
+});
+
+// Get the Redis client instance
+const client = redisClient(); // same as redisClient.getClient()
+
+client.set('foo', 'bar');
+client.get('foo').then(console.log); // Outputs: bar
+
+// Gracefully close the client when shutting down
+redisClient.close(() => {
+    console.log('Redis connection closed');
+});
 ```
