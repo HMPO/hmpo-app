@@ -213,13 +213,15 @@ const value = config('config.path.string', 'default value');
 const value = config.get('config.path.string', 'default value');
 ```
 
-## `logger`
+## [`logger`](/lib/logger.js)
 
 ### Returns
 
 **`setup(options?)`** - Setup the logger by passing an options `Object`. If no options are supplied it will default to checking `config.get('logs', {})`. This passes the provided options directly to `hmpoLogger.config()`.
 
 **`get(name?, level?)` / `logger(name?, level?)`** - Get a new logger with an optional name (defaults to `:hmpo-app`) and an optional level (defaults to `1`).
+
+### Example Usage
 
 ```javascript
 const { logger } = require('hmpo-app');
@@ -251,13 +253,7 @@ const myLogger1 = logger('logger1');
 const myLogger2 = logger.get('logger2');
 ```
 
-## `redisClient`
-
-### TODO - Talk About...
-
-- setup export (exported method)
-- getClient export (exported method)
-- How Object.assign() in redis-client.js allows for redisClient() or redisClient.getClient(). They behave the same. redisClient.setup(), redisClient.client, and redisClient.close() are also made available.
+## [`redisClient`](/lib/redis-client.js)
 
 ### Returns
 
@@ -275,6 +271,8 @@ const myLogger2 = logger.get('logger2');
 **`close(callback)`** - Quits a redisClient if it exists / is connected, then sets `redisClient.client = null`. Finally, fires the provided callback function.
 
 Due to the way [redis-client.js](/lib/redis-client.js) uses `Object.assign()`, you can use `redisClient()` and `redisClient.getClient()` interchangeably - depending on which you find better for readability.
+
+### Example Usage
 
 ```javascript
 const { redisClient } = require('hmpo-app');
@@ -302,3 +300,9 @@ redisClient.close(() => {
     console.log('Redis connection closed');
 });
 ```
+
+## Further Examples
+
+- The [example app](/example/).
+- The [hmpo-logger](https://github.com/HMPO/hmpo-logger/blob/5c69e2df6e7c8db6f4642efae5d7fb283e0c7aad/README.md?plain=1#L20) library.
+- The [hmpo-components](https://github.com/HMPO/hmpo-components/blob/3f7c5c97be49c4067877f6d2056b6369909bef17/README.md?plain=1#L24) library.
