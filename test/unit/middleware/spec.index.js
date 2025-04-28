@@ -67,6 +67,9 @@ describe('middleware functions', () => {
                 featureFlag: {
                     middleware: sinon.stub().returns('featureFlag middleware')
                 },
+                businessFlag: {
+                    middleware: sinon.stub().returns('businessFlag middleware')
+                },
                 modelOptions: {
                     middleware: sinon.stub().returns('modelOptions middleware')
                 },
@@ -97,12 +100,13 @@ describe('middleware functions', () => {
                 './model-options': stubs.modelOptions,
                 './version': stubs.version,
                 './cookies': stubs.cookies,
-                './feature-flag': stubs.featureFlag
+                './feature-flag': stubs.featureFlag,
+                './business-flag': stubs.businessFlag
             });
         });
 
         it('should not register hmpoLogger middleware if requestLogging is false', () => {
-            middleware.setup({ app, urls: {}, publicOptions: {}, cookieOptions: {}, modelOptionsConfig: {}, featureFlags: {}, requestLogging: false, stubs });
+            middleware.setup({ app, urls: {}, publicOptions: {}, cookieOptions: {}, modelOptionsConfig: {}, featureFlags: {}, businessFlag: {}, requestLogging: false, stubs });
             expect(stubs.hmpoLogger.middleware).to.not.have.been.called;
             expect(app.use).to.not.have.been.calledWith('hmpoLogger middleware');
         });
@@ -254,6 +258,16 @@ describe('middleware functions', () => {
             app.use.should.have.been.calledWithExactly('featureFlag middleware');
         });
 
+        it('should use the business flag setup middleware', () => {
+            middleware.setup({
+                businessFlags: { testBusinessFeatureFlag: true }
+            });
+            stubs.businessFlag.middleware.should.have.been.calledWithExactly({
+                businessFlags: { testBusinessFeatureFlag: true }
+            });
+            app.use.should.have.been.calledWithExactly('businessFlag middleware');
+        });
+
         it('should use the cookies middleware', () => {
             middleware.setup({ cookies: { secret: 'test' } });
             stubs.cookies.middleware.should.have.been.calledWithExactly({ secret: 'test' });
@@ -333,6 +347,9 @@ describe('middleware functions', () => {
                 featureFlag: {
                     middleware: sinon.stub().returns('featureFlag middleware')
                 },
+                businessFlag: {
+                    middleware: sinon.stub().returns('businessFlag middleware')
+                },
                 linkedFiles: {
                     middleware: sinon.stub().returns('linkedFiles middleware')
                 }
@@ -341,6 +358,7 @@ describe('middleware functions', () => {
             middleware = proxyquire(APP_ROOT + '/middleware', {
                 './session': stubs.session,
                 './feature-flag': stubs.featureFlag,
+                './business-flag': stubs.businessFlag,
                 './linked-files': stubs.linkedFiles
             });
         });
@@ -357,6 +375,12 @@ describe('middleware functions', () => {
             middleware.session(app);
             stubs.featureFlag.middleware.should.have.been.calledWithExactly();
             app.use.should.have.been.calledWithExactly('featureFlag middleware');
+        });
+
+        it('should use the business flag setup middleware', () => {
+            middleware.session(app);
+            stubs.businessFlag.middleware.should.have.been.calledWithExactly();
+            app.use.should.have.been.calledWithExactly('businessFlag middleware');
         });
 
         it('should use the linked files middleware', () => {

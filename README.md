@@ -19,6 +19,7 @@ router.use('/', require('./routes/example'));
 const {
     setup,
     featureFlag,
+    businessFlag,
     config,
     logger,
     redisClient,
@@ -159,6 +160,39 @@ const disabledMiddleware = (req, res, next) => res.send('flag disabled');
 
 router.use(featureFlag.routeIf('flagname', enabledMiddleware, disabledMiddleware));
 ```
+
+## [`businessFlag`](/middleware/business-flag.js)
+
+Middleware returned from `require('hmpo-app')`.
+
+**`getFlags(req)`** - Return all session and config business flags.
+
+**`isEnabled(flag, req)`** - Check if a business flag is enabled in session or config.
+
+**`isDisabled(flag, req)`** - Check if a business flag is disabled in session or config.
+
+**`redirectIfEnabled(flag, url)`** - Middleware to redirect if a flag is enabled.
+
+**`redirectIfDisabled(flag, url)`** - Middleware to redirect if a flag is disabled.
+
+**`routeIf(flag, handlerIf, handlerElse)`** - Middleware to run different handler depending on status of a feature flag.
+
+### Example Usage
+
+```javascript
+const { business } = require('hmpo-app');
+
+const enabledMiddleware = (req, res, next) => res.send('flag enabled');
+const disabledMiddleware = (req, res, next) => res.send('flag disabled');
+
+router.use(business.routeIf('flagname', enabledMiddleware, disabledMiddleware));
+```
+
+#### Feature Flag & Business Flag Semantic Differences:
+
+- Feature Flags are typically used for technical or deployment toggles, like enabling a new logging format or switching between frontend flows. Feature Flags are meant to be temporary.
+
+- Business Flags are used for controling policy-driven or operational logic, service variation, or business rule change. Business Flags are meant to be semi-permenant, until the business says otherwise.
 
 ## [`config`](/lib/config.js)
 

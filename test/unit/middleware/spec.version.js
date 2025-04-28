@@ -27,7 +27,8 @@ describe('Version', () => {
                 appName: 'test',
                 appVersion: '1.0.1',
                 nodeVersion: String(process.versions.node),
-                featureFlags: { testFeature: true }
+                featureFlags: { testFeature: true },
+                businessFlags: { testBusinessFeatureFlag: true}
             });
         });
 
@@ -38,7 +39,8 @@ describe('Version', () => {
                 appName: 'test',
                 appVersion: '1.0.1',
                 nodeVersion: String(process.versions.node),
-                featureFlags: { testFeature: true }
+                featureFlags: { testFeature: true },
+                businessFlags: { testBusinessFeatureFlag: true}
             });
         });
 

@@ -13,7 +13,8 @@ describe('hmpo-app', () => {
             'translation',
             'nunjucks',
             'linkedFiles',
-            'featureFlag'
+            'featureFlag',
+            'businessFlag'
         ]);
     });
 

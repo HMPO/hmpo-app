@@ -101,5 +101,6 @@ module.exports = {
     translation: require('./middleware/translation'),
     nunjucks: require('./middleware/nunjucks'),
     linkedFiles: require('./middleware/linked-files'),
-    featureFlag: require('./middleware/feature-flag')
+    featureFlag: require('./middleware/feature-flag'),
+    businessFlag: require('./middleware/business-flag')
 };

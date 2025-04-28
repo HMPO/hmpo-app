@@ -18,6 +18,7 @@ const middleware = ({
     versionJSON.appVersion = config.get('APP_VERSION'),
     versionJSON.nodeVersion = process.versions.node;
     versionJSON.featureFlags = config.get('featureFlags');
+    versionJSON.businessFlags = config.get('businessFlags');
 
     return (req, res, next) => res.send(versionJSON);
 };
