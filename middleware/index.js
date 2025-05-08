@@ -11,6 +11,7 @@ const middleware = {
         env = process.env.NODE_ENV,
         urls = {},
         featureFlags,
+        businessFlags,
         publicDirs,
         publicImagesDirs,
         public: publicOptions,
@@ -29,6 +30,7 @@ const middleware = {
         const healthcheck = require('./healthcheck');
         const modelOptions = require('./model-options');
         const featureFlag = require('./feature-flag');
+        const businessFlag = require('./business-flag');
         const version = require('./version');
         const cookies = require('./cookies');
         const bodyParser = require('body-parser');
@@ -72,6 +74,7 @@ const middleware = {
         }));
 
         app.use(featureFlag.middleware({ featureFlags }));
+        app.use(businessFlag.middleware({ businessFlags }));
         app.use(cookies.middleware(cookieOptions));
         app.use(modelOptions.middleware(modelOptionsConfig));
         app.use(bodyParser.urlencoded({ extended: true }));
@@ -100,10 +103,12 @@ const middleware = {
     session(app = requiredArgument('app'), sessionOptions) {
         const session = require('./session');
         const featureFlag = require('./feature-flag');
+        const businessFlag = require('./business-flag');
         const linkedFiles = require('./linked-files');
 
         app.use(session.middleware(sessionOptions));
         app.use(featureFlag.middleware());
+        app.use(businessFlag.middleware());
         app.use(linkedFiles.middleware(sessionOptions));
     },
 

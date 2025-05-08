@@ -14,6 +14,7 @@ global.CONFIG_RESET = () => {
         APP_NAME: 'test',
         APP_VERSION: '1.0.1',
         featureFlags: { testFeature: true },
+        businessFlags: { testBusinessFeatureFlag: true },
         logs: { console: true }
     } });
 };
