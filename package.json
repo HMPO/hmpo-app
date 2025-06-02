@@ -61,7 +61,7 @@
   "peerDependencies": {
     "express": ">=4",
     "govuk-frontend": ">=5",
-    "hmpo-components": ">=7",
+    "hmpo-components": ">=8",
     "hmpo-config": ">=4",
     "hmpo-i18n": ">=7",
     "hmpo-logger": ">=8",
