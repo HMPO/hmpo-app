@@ -94,6 +94,7 @@ const middleware = {
         });
 
         const nunjucksEnv = nunjucks.setup(app, { views, ...nunjucksOptions });
+        nunjucksEnv.addGlobal('govukRebrand', true);
         translation.setup(app, { locales, ...translationOptions });
         hmpoComponents.setup(app, nunjucksEnv);
 

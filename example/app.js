@@ -1,7 +1,9 @@
 const { setup } = require('hmpo-app');
 const express = require('express');
+const path = require('path');
 
 const { app, staticRouter, router } = setup({ config: { APP_ROOT: __dirname } });
+app.use('/assets', express.static(path.join(__dirname, '/node_modules/govuk-frontend/dist/govuk/assets')));
 
 // Override template file extension from .html to .njk
 app.set('view engine', 'njk');
