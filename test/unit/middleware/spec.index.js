@@ -43,7 +43,9 @@ describe('middleware functions', () => {
         let stubs, nunjucksEnv;
 
         beforeEach(() => {
-            nunjucksEnv = {};
+            nunjucksEnv = {
+                addGlobal: sinon.stub()
+            };
             stubs = {
                 express: sinon.stub().returns(app),
                 hmpoLogger: {

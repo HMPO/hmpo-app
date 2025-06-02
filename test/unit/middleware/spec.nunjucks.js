@@ -27,7 +27,7 @@ describe('nunjucks middleware', () => {
             [
                 APP_ROOT + '/test/unit/fixtures/views',
                 APP_ROOT + '/node_modules/hmpo-components/components',
-                APP_ROOT + '/node_modules/govuk-frontend',
+                APP_ROOT + '/node_modules/govuk-frontend/dist',
             ],
             {
                 express: app,
@@ -44,7 +44,7 @@ describe('nunjucks middleware', () => {
             [
                 APP_ROOT + '/test/unit/fixtures/views',
                 APP_ROOT + '/node_modules/hmpo-components/components',
-                APP_ROOT + '/node_modules/govuk-frontend',
+                APP_ROOT + '/node_modules/govuk-frontend/dist',
             ],
             sinon.match.object
         );
