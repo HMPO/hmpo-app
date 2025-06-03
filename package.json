@@ -1,6 +1,6 @@
 {
   "name": "hmpo-app",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "Bootstrap middleware and templating",
   "author": "HMPO",
   "license": "MIT",
@@ -42,7 +42,7 @@
     "express": "^4.21.0",
     "globals": "^15.11.0",
     "govuk-frontend": "^5.10.2",
-    "hmpo-components": "^8.0.0",
+    "hmpo-components": "^8.0.1",
     "hmpo-config": "^4.0.0",
     "hmpo-i18n": "^7.0.0",
     "hmpo-logger": "^8.0.0",
