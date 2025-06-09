@@ -1,6 +1,83 @@
 
 # hmpo-app forms framework bootstrap
 
+> **NOTE:**
+> `hmpo-app` **v5.0.2 and above** uses [GOV.UK Frontend v5+](https://github.com/alphagov/govuk-frontend), which requires [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html) and a modern JavaScript bundler.
+>
+> ### How to Bundle ESM JavaScript
+>
+> You must use a JavaScript bundler (such as **Rollup**, **Webpack**, or **Vite**) that supports ESM.
+> Directly including these modules in `<script>` tags in browsers is **not supported**.
+>
+> **If your project or its dependencies use a mix of CommonJS (CJS) and ESM modules, you will need to configure Rollup with additional plugins to ensure everything is bundled correctly.**
+>
+> #### 1. Install dependencies
+>
+> ```bash
+> npm install --save-dev rollup @rollup/plugin-commonjs @rollup/plugin-node-resolve @rollup/plugin-terser
+> ```
+>
+> #### 2. Example entry file (`assets/javascripts/app.js`)
+>
+> ```js
+> import { initAll } from 'govuk-frontend';
+> import 'hmpo-components/all.js';
+>
+> // ...your custom JS here
+>
+> initAll();
+> ```
+>
+> #### 3. Example Rollup config (`rollup.config.mjs`)
+>
+> ```js
+> import commonjs from '@rollup/plugin-commonjs';
+> import { nodeResolve } from '@rollup/plugin-node-resolve';
+> import terser from '@rollup/plugin-terser';
+>
+> export default {
+>   input: 'assets/javascripts/app.js',
+>   output: {
+>     file: 'public/javascripts/application.js',
+>     format: 'esm',
+>     sourcemap: true,
+>   },
+>   plugins: [
+>     nodeResolve(),
+>     commonjs(),
+>     terser()
+>   ],
+> };
+> ```
+>
+> #### 4. Add a build script to your `package.json`
+>
+> ```json
+> "scripts": {
+>   "build:js": "mkdir -p public/javascripts && rollup -c"
+> }
+> ```
+>
+> Build your bundle with:
+>
+> ```bash
+> npm run build:js
+> ```
+>
+> #### 5. Include the bundle in your HTML
+>
+> ```html
+> <script type="module" src="/public/javascripts/application.js"></script>
+> ```
+>
+> ---
+>
+> If you previously included scripts directly with `<script>`, you will need to update your build pipeline to use ESM and a bundler.
+>
+> _For more options and troubleshooting, see the [Rollup documentation](https://rollupjs.org/) and plugin docs._
+
+
+
 ## Usage
 
 ### Simple usage
@@ -129,7 +206,7 @@ Any of these options (except for `config`) can also be specified in a config fil
 - **`sessionIDHeader`** = `'X-SESSION-ID'` - Session ID request header to pass through to models.
 - **`scenarioIDHeader`** = `'X-SCENARIO-ID'` - Stub scenario ID request header to pass through to models.
 
-**`helmet`** - Configuration for [Helmet](https://helmetjs.github.io/), or `false` to only use frameguard and disable `x-powered-by`.  
+**`helmet`** - Configuration for [Helmet](https://helmetjs.github.io/), or `false` to only use frameguard and disable `x-powered-by`.
 **`disableCompression`** = `false` - disable compression middleware.
 
 **`cookies`** - Configuration for cookie parsing middleware.
