@@ -8,7 +8,7 @@
     "clean": "rm -rf public/; mkdir public",
     "build": "npm run build:sass && npm run build:js",
     "build:sass": "mkdir -p public/stylesheets; sass --quiet --load-path . --style compressed --no-source-map assets/stylesheets/app.scss public/stylesheets/application.css",
-    "build:js": "mkdir -p public/javascripts; uglifyjs node_modules/govuk-frontend/dist/govuk/all.mjs node_modules/hmpo-components/all.js assets/javascripts/*.js -o public/javascripts/application.js",
+    "build:js": "mkdir -p public/javascripts && rollup -c",
     "postinstall": "npm run clean && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "express": "4",
-    "govuk-frontend": "^5.10.2",
+    "govuk-frontend": "latest",
     "hmpo-app": "latest",
     "hmpo-components": "latest",
     "hmpo-config": "latest",
@@ -27,7 +27,10 @@
     "nunjucks": "3"
   },
   "devDependencies": {
-    "sass": "latest",
-    "uglify-js": "latest"
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.42.0",
+    "sass": "latest"
   }
 }
