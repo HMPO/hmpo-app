@@ -6,13 +6,15 @@ const middleware = ({
     secret = 'not-secret',
     ttl = 30000,
     sessionStore,
+    prefix = 'sess:',
     cookieOptions = {}
 } = {}) => {
     if (!sessionStore) {
         const RedisStore = require('connect-redis')(expressSession);
         sessionStore = new RedisStore({
             client: redisClient.getClient(),
-            ttl
+            ttl,
+            prefix
         });
     }
 
