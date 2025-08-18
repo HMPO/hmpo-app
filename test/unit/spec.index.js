@@ -1,5 +1,6 @@
 const index = require(APP_ROOT);
 const express = require('express');
+const sinon = require('sinon');
 
 describe('hmpo-app', () => {
 
@@ -19,40 +20,34 @@ describe('hmpo-app', () => {
     });
 
     describe('setup', () => {
-        let app;
-
         beforeEach(() => {
-            app = {
-                use: sinon.stub(),
-                get: sinon.stub()
-            };
             sinon.stub(express, 'Router');
-            express.Router.onCall(0).returns('staticRouter');
-            express.Router.onCall(1).returns('router');
-            express.Router.onCall(2).returns('errorRouter');
+            express.Router.onCall(0).returns(sinon.stub());
+            express.Router.onCall(1).returns(sinon.stub());
+            express.Router.onCall(2).returns(sinon.stub());
+
             sinon.stub(index.config, 'get');
             sinon.stub(index.config, 'setup');
             sinon.stub(index.logger, 'setup');
             sinon.stub(index.redisClient, 'setup');
-            sinon.stub(index.middleware, 'setup').returns(app);
-            sinon.stub(index.middleware, 'session');
-            sinon.stub(index.middleware, 'errorHandler');
-            sinon.stub(index.middleware, 'listen');
+
+            sinon.stub(index.middleware, 'setup').callsFake(({ app }) => app);
+            sinon.stub(index.middleware, 'session').callsFake(() => {});
+            sinon.stub(index.middleware, 'errorHandler').callsFake(() => {});
+            sinon.stub(index.middleware, 'listen').callsFake(() => {});
         });
+
         afterEach(() => {
-            express.Router.restore();
-            index.config.get.restore();
-            index.config.setup.restore();
-            index.logger.setup.restore();
-            index.redisClient.setup.restore();
-            index.middleware.setup.restore();
-            index.middleware.session.restore();
-            index.middleware.errorHandler.restore();
-            index.middleware.listen.restore();
+            sinon.restore();
+        });
+
+        it('should work when called without options', () => {
+            const result = index.setup();
+            result.should.have.keys('app', 'staticRouter', 'router', 'errorRouter');
         });
 
         it('calls config.setup', () => {
-            index.setup();
+            index.setup({});
             index.config.setup.should.have.been.calledWithExactly(undefined);
         });
 
@@ -96,8 +91,9 @@ describe('hmpo-app', () => {
 
         it('calls middleware.setup with options', () => {
             index.config.get.withArgs().returns({ config: true });
-            index.setup({ option: true });
-            index.middleware.setup.should.have.been.calledWithExactly({
+            const result = index.setup({ option: true });
+            index.middleware.setup.should.have.been.calledWithMatch({
+                app: result.app,
                 option: true,
                 config: true
             });
@@ -105,11 +101,11 @@ describe('hmpo-app', () => {
 
         it('calls middleware.session with options', () => {
             index.config.get.withArgs('session').returns({ config: true });
-            index.setup({ session: { option: true } });
-            index.middleware.session.should.have.been.calledWithExactly(app, {
-                option: true,
-                config: true
-            });
+            const result = index.setup({ session: { option: true } });
+            index.middleware.session.should.have.been.calledWithExactly(
+                result.app,
+                { option: true, config: true }
+            );
         });
 
         it('should not call middleware.session if option is false', () => {
@@ -117,14 +113,13 @@ describe('hmpo-app', () => {
             index.middleware.session.should.not.have.been.called;
         });
 
-
         it('calls middleware.errorHandler with options', () => {
             index.config.get.withArgs('errors').returns({ config: true });
-            index.setup({ errors: { option: true } });
-            index.middleware.errorHandler.should.have.been.calledWithExactly(app, {
-                option: true,
-                config: true
-            });
+            const result = index.setup({ errors: { option: true } });
+            index.middleware.errorHandler.should.have.been.calledWithExactly(
+                result.app,
+                { option: true, config: true }
+            );
         });
 
         it('should not call middleware.errorHandler if option is false', () => {
@@ -132,17 +127,58 @@ describe('hmpo-app', () => {
             index.middleware.errorHandler.should.not.have.been.called;
         });
 
-        it('should call middlewareSetupFn if option is defined', () => {
+        it('should call globalMiddlewareSetupFn if option is defined', () => {
+            const callbackSpy = sinon.spy();
+
+            index.setup({ globalMiddlewareSetupFn: callbackSpy });
+
+            callbackSpy.should.have.been.calledWithMatch(
+                sinon.match.has('use').and(sinon.match.has('get'))
+            );
+        });
+
+        it('should not call globalMiddlewareSetupFn if option is not defined', () => {
             const callbackStub = sinon.stub();
-            index.setup({ middlewareSetupFn: callbackStub});
-            callbackStub.should.have.been.called;
+            index.setup({});
+            callbackStub.should.not.have.been.called;
+        });
+
+        it('should call middlewareSetupFn if option is defined', () => {
+            const callbackSpy = sinon.spy();
+
+            index.setup({ middlewareSetupFn: callbackSpy });
+
+            callbackSpy.should.have.been.calledWithMatch(
+                sinon.match.has('use').and(sinon.match.has('get'))
+            );
+        });
+
+        it('should call globalMiddlewareSetupFn and middlewareSetupFn if option is defined', () => {
+            const callbackSpy = sinon.spy();
+            const callbackSpy2 = sinon.spy();
+            index.setup({
+                globalMiddlewareSetupFn: callbackSpy,
+                middlewareSetupFn: callbackSpy2  });
+
+            callbackSpy.should.have.been.calledWithMatch(
+                sinon.match.has('use').and(sinon.match.has('get'))
+            );
+            callbackSpy2.should.have.been.calledWithMatch(
+                sinon.match.has('use').and(sinon.match.has('get'))
+            );
+        });
+
+        it('should not call middlewareSetupFn if option is not defined', () => {
+            const callbackStub = sinon.stub();
+            index.setup({});
+            callbackStub.should.not.have.been.called;
         });
 
         it('calls middleware.listen with options', () => {
             index.config.get.withArgs('host').returns('hostname');
             index.config.get.withArgs('port').returns(1234);
-            index.setup({ port: 5678});
-            index.middleware.listen.should.have.been.calledWithExactly(app, {
+            const result = index.setup({ port: 5678 });
+            index.middleware.listen.should.have.been.calledWithExactly(result.app, {
                 port: 5678,
                 host: 'hostname'
             });
@@ -154,14 +190,13 @@ describe('hmpo-app', () => {
         });
 
         it('returns apps and routers', () => {
-            const routers = index.setup();
-            routers.should.eql({
-                app,
-                staticRouter: 'staticRouter',
-                router: 'router',
-                errorRouter: 'errorRouter'
+            const result = index.setup({});
+            result.should.eql({
+                app: result.app,
+                staticRouter: express.Router.getCall(0).returnValue,
+                router: express.Router.getCall(1).returnValue,
+                errorRouter: express.Router.getCall(2).returnValue
             });
         });
     });
-
 });

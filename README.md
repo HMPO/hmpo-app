@@ -124,7 +124,9 @@ See [example app](/example/) for more details
 
 ### Parameters
 
-- **`options`** (`Object`) - An object containing the options for configuring the application. Defaults to `{ middlewareSetupFn: undefined }` if not provided.
+- **`options`** (`Object`) - Configuration options for the application:
+  - **`globalMiddlewareSetupFn`** (`Function`, optional) - Configures the global middleware setup process. Defaults to `undefined`.
+  - **`middlewareSetupFn`** (`Function`, optional) - Configures the middleware setup process. Defaults to `undefined`.
 
 ### Returns
 

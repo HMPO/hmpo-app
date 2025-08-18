@@ -13,7 +13,7 @@
   "scripts": {
     "pretest": "npm run test:lint",
     "test": "npm run test:unit",
-    "posttest": "npm audit",
+    "posttest": "npm audit --registry='https://registry.npmjs.org'",
     "test:lint": "eslint .",
     "test:unit": "nyc _mocha",
     "prepare": "husky"

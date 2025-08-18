@@ -1,5 +1,4 @@
 const path = require('path');
-const express = require('express');
 const logger = require('../lib/logger');
 
 const requiredArgument = argName => {
@@ -8,6 +7,7 @@ const requiredArgument = argName => {
 
 const middleware = {
     setup({
+        app = requiredArgument('app'),
         env = process.env.NODE_ENV,
         urls = {},
         featureFlags,
@@ -44,9 +44,6 @@ const middleware = {
         urls.publicImages = urls.publicImages || path.posix.join(urls.public, '/images');
         urls.version = urls.version === undefined ? '/version' : urls.version;
         urls.healthcheck = urls.healthcheck === undefined ? '/healthcheck' : urls.healthcheck;
-
-        // create new express app
-        const app = express();
 
         // environment
         env = (env || 'development').toLowerCase();
