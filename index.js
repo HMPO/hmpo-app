@@ -11,6 +11,7 @@ const redisClient = require('./lib/redis-client');
  * The setup process can be customized using the provided `options` object. The function will initialize the components based on the options provided, or default to values from the `config` module.
  *
  * @param {Object} [options={middlewareSetupFn: undefined}] - Configuration options to customize the setup process.
+ * @param {Object} [options={globalMiddlewareSetupFn: undefined}] - Configuration options to customize the global middleware setup process.
  * @param {Object} [options.config] - Optional configuration for the `config.setup()` method. Set to `false` to skip configuration setup.
  * @param {Object} [options.logs] - Optional configuration for logging. Merged with the default config fetched by `config.get('logs')`. Set to `false` to skip log setup.
  * @param {Object} [options.redis] - Optional configuration for the Redis client. Merged with the default config fetched by `config.get('redis')`. Set to `false` to skip Redis setup.
@@ -42,7 +43,8 @@ const redisClient = require('./lib/redis-client');
  */
 
 const setup = (options = {
-    middlewareSetupFn: undefined
+    middlewareSetupFn: undefined,
+    globalMiddlewareSetupFn: undefined
 }) => {
     if (options.config !== false) config.setup(options.config);
 
@@ -56,7 +58,14 @@ const setup = (options = {
         ...options.redis
     });
 
-    const app = middleware.setup({
+    let app = express();
+
+    if (options.globalMiddlewareSetupFn && typeof options.globalMiddlewareSetupFn === 'function') {
+        options.globalMiddlewareSetupFn(app);
+    }
+
+    app = middleware.setup({
+        app,
         ...config.get(),
         ...options
     });
