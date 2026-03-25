@@ -1,6 +1,6 @@
 const chai = require('chai');
 const resolve = require('path').resolve;
-chai.use(require('sinon-chai'));
+chai.use(require('sinon-chai').default);
 
 global.should = chai.should();
 global.expect = chai.expect;
