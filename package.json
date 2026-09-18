@@ -70,6 +70,7 @@
     "nunjucks": ">=3"
   },
   "overrides": {
+    "qs": "^6.16.0",
     "mocha": {
       "serialize-javascript": "^7.0.4",
       "diff": "^8.0.3"
