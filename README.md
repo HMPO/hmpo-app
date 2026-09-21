@@ -2,7 +2,7 @@
 # hmpo-app forms framework bootstrap
 
 > **NOTE:**
-> `hmpo-app` **v5.0.2 and above** uses [GOV.UK Frontend v5+](https://github.com/alphagov/govuk-frontend), which requires [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html) and a modern JavaScript bundler.
+> `hmpo-app` **v6.0.0 and above** uses [GOV.UK Frontend v6.5+](https://github.com/alphagov/govuk-frontend), which requires [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html) and a modern JavaScript bundler.
 >
 > ### How to Bundle ESM JavaScript
 >

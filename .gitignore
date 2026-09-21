@@ -48,5 +48,6 @@ assets/images/passports
 # redis dump
 dump.rdb
 .vagrant
+code_reviews/
 
 
